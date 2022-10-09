@@ -1,0 +1,302 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  backend
+  namespace: default
+  labels:
+    app:  backend
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  backend
+        tier: backend
+    spec:
+      containers:
+      - name:  backend
+        image:  meindealz/backend:prod
+        imagePullPolicy: Always
+        command: [ "sleep", "infinity" ]
+        command: ["/bin/sh"]
+        args: ["-c", 'uvicorn --host localhost --port 8000 app.main:app']
+#Discuss on the resources before deployment        
+        resources:
+          requests:
+            cpu: 100m
+            memory: 200Mi
+          limits:
+            cpu: 100m
+            memory: 200Mi
+        # livenessProbe:
+        #   tcpSocket:
+        #     port: 6432
+        #   initialDelaySeconds: 5
+        #   timeoutSeconds: 5
+        #   successThreshold: 1
+        #   failureThreshold: 3
+        #   periodSeconds: 10
+        # readinessProbe:
+        #   httpGet:
+        #     path: /_status/healthz
+        #     port: 6432
+        #   initialDelaySeconds: 5
+        #   timeoutSeconds: 2
+        #   successThreshold: 1
+        #   failureThreshold: 3
+        #   periodSeconds: 10
+        env:
+        - name: BACKEND_CORS_ORIGINS
+          valueFrom:
+            configMapKeyRef:
+              key: BACKEND_CORS_ORIGINS
+              name: db-configmap
+        - name: BOT_EMAIL
+          valueFrom:
+            configMapKeyRef:
+              key: BOT_EMAIL
+              name: db-configmap
+        - name: BOT_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: BOT_PASSWORD
+              name: db-configmap
+        - name: BOT_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              key: BOT_USERNAME
+              name: db-configmap
+        - name: DOCKER_IMAGE_BACKEND
+          valueFrom:
+            configMapKeyRef:
+              key: DOCKER_IMAGE_BACKEND
+              name: db-configmap
+        - name: DOCKER_IMAGE_CELERYWORKER
+          valueFrom:
+            configMapKeyRef:
+              key: DOCKER_IMAGE_CELERYWORKER
+              name: db-configmap
+        - name: DOCKER_IMAGE_FRONTEND
+          valueFrom:
+            configMapKeyRef:
+              key: DOCKER_IMAGE_FRONTEND
+              name: db-configmap
+        - name: DOMAIN
+          valueFrom:
+            configMapKeyRef:
+              key: DOMAIN
+              name: db-configmap
+        - name: EMAILS_FROM_EMAIL
+          valueFrom:
+            configMapKeyRef:
+              key: EMAILS_FROM_EMAIL
+              name: db-configmap
+        - name: FIRST_SUPERUSER
+          valueFrom:
+            configMapKeyRef:
+              key: FIRST_SUPERUSER
+              name: db-configmap
+        - name: FIRST_SUPERUSER_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: FIRST_SUPERUSER_PASSWORD
+              name: db-configmap
+        - name: FIRST_SUPERUSER_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              key: FIRST_SUPERUSER_USERNAME
+              name: db-configmap
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              key: POSTGRES_DB
+              name: db-configmap
+        - name: POSTGRES_DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: POSTGRES_DB_PORT
+              name: db-configmap
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: POSTGRES_PASSWORD
+              name: db-configmap
+        - name: POSTGRES_SERVER
+          valueFrom:
+            configMapKeyRef:
+              key: POSTGRES_SERVER
+              name: db-configmap
+        - name: POSTGRES_USER
+          valueFrom:
+            configMapKeyRef:
+              key: POSTGRES_USER
+              name: db-configmap
+        - name: PROJECT_NAME
+          valueFrom:
+            configMapKeyRef:
+              key: PROJECT_NAME
+              name: db-configmap
+        - name: SECRET_KEY
+          valueFrom:
+            configMapKeyRef:
+              key: SECRET_KEY
+              name: db-configmap
+        - name: SENTRY_DSN
+          valueFrom:
+            configMapKeyRef:
+              key: SENTRY_DSN
+              name: db-configmap
+        - name: SMTP_HOST
+          valueFrom:
+            configMapKeyRef:
+              key: SMTP_HOST
+              name: db-configmap
+        - name: SMTP_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: SMTP_PASSWORD
+              name: db-configmap
+        - name: SMTP_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: SMTP_PORT
+              name: db-configmap
+        - name: SMTP_TLS
+          valueFrom:
+            configMapKeyRef:
+              key: SMTP_TLS
+              name: db-configmap
+        - name: SMTP_USER
+          valueFrom:
+            configMapKeyRef:
+              key: SMTP_USER
+              name: db-configmap
+        - name: STACK_NAME
+          valueFrom:
+            configMapKeyRef:
+              key: STACK_NAME
+              name: db-configmap
+        - name: TAG
+          valueFrom:
+            configMapKeyRef:
+              key: TAG
+              name: db-configmap
+        - name : SERVER_NAME
+          valueFrom:
+            configMapKeyRef:
+              key: SERVER_NAME
+              name: db-configmap
+        - name: SERVER_HOST
+          valueFrom:
+            configMapKeyRef:
+              key: SERVER_HOST
+              name: db-configmap        
+        # - name: SMTP_PORT
+        #   value: "587"
+        # - name: SMTP_TLS
+        #   value: "True"   
+        # - name: USERS_OPEN_REGISTRATION
+        #   value: "False"
+        # - name: PROJECT_NAME
+        #   value: hotdealz_api
+        # - name: SERVER_NAME
+        #   value: localhost
+        # - name: POSTGRES_SERVER
+        #   value: 49.12.46.31 
+        # - name: BACKEND_CORS_ORIGINS
+        #   value: http://x.x.x.x:8888
+
+          
+        # - name: SECRET_KEY
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: secret
+        #       key: SECRET_KEY
+        # - name: FIRST_SUPERUSER
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: secret
+        #       key: FIRST_SUPERUSER
+        # - name: FIRST_SUPERUSER_PASSWORD
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: secret
+        #       key: FIRST_SUPERUSER_PASSWORD
+        # - name: FIRST_SUPERUSER_USERNAME
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: secret
+        #       key: FIRST_SUPERUSER_USERNAME
+        # - name: SMTP_USER
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: secret
+        #       key: SMTP_USER  
+        # - name: SMTP_PASSWORD
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: secret
+        #       key: SMTP_PASSWORD
+        # - name: POSTGRES_SERVER
+        #   valueFrom:
+        #     configMapRef:
+        #       name: db-configmap
+        #       key: POSTGRES_SERVER             
+
+
+        ports:
+        - containerPort:  8888
+          name:  backend
+        - containerPort: 80
+          name: backend80
+        volumeMounts:
+        - name: localtime
+          mountPath: /etc/localtime
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Shanghai
+      restartPolicy: Always
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: backend-service
+#   annotations:
+#     service.beta.kubernetes.io/do-loadbalancer-protocol: "http"
+#     service.beta.kubernetes.io/do-loadbalancer-sticky-sessions-type: "cookies"
+#     service.beta.kubernetes.io/do-loadbalancer-sticky-sessions-cookie-name: "example"
+#     service.beta.kubernetes.io/do-loadbalancer-sticky-sessions-cookie-ttl: "60"
+# spec:
+#   selector:
+#     app: backend
+#     tier: backend
+#   type: NodePort
+#   externalTrafficPolicy: Local
+#   ports:
+#     - protocol: TCP
+#       port: 8888
+#       targetPort: 8888
+#       nodePort: 30003
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 80   

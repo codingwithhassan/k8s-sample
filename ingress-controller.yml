@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Ingress
+metadata:
+  name: api
+  namespace: fuse
+  labels:
+    app: api
+  annotations:
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "http://http://x.x.x.x//api"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+spec:
+  rules:
+  - host: http://x.x.x.x/
+    http:
+      paths:
+      - backend:
+          serviceName: api
+          servicePort: 80
+        path: /api
+  tls:
+  - hosts:
+    - http://x.x.x.x/
+    secretName: backend

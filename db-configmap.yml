@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-configmap
+data:
+  BACKEND_CORS_ORIGINS: '["http://localhost","http://x.x.x.x:80","https://x.x.x.x","http://x.x.x.x"]'
+  POSTGRES_SERVER: 'x.x.x.x'
+  POSTGRES_DB:
+  PROJECT_NAME:
+  SMTP_HOST: mail.techgrids.com
+  EMAILS_FROM_EMAIL:
+  DOCKER_IMAGE_CELERYWORKER:
+  STACK_NAME: hotdealz_api-com
+  SERVER_NAME: backend
+  SMTP_TLS: 'True'
+  POSTGRES_DB_PORT: '6432'
+  SERVER_HOST: 'http://127.0.0.1'
+  SMTP_PORT: '587'
+  BOT_EMAIL:
+  BOT_PASSWORD:
+  BOT_USERNAME:
+  DOCKER_IMAGE_BACKEND:
+  DOCKER_IMAGE_FRONTEND:
+  FIRST_SUPERUSER:
+  FIRST_SUPERUSER_PASSWORD:
+  DOMAIN: localhost
+  FIRST_SUPERUSER_USERNAME: admin
+  POSTGRES_PASSWORD:
+  POSTGRES_USER: hotdealer
+  SECRET_KEY:
+  SENTRY_DSN: ""
+  SMTP_PASSWORD:
+  SMTP_USER: python@techgrids.com
+  TAG: prod
+  USERS_OPEN_REGISTRATION: False
